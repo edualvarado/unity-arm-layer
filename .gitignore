@@ -71,7 +71,7 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 # Others
-/[Aa]ssets/OtherDemos/*
-/[Aa]ssets/OtherDemos.meta
+/[Aa]ssets/OtherDemos/DemoScenes/*
+/[Aa]ssets/OtherDemos/DemoScenes.meta
 /[Aa]ssets/Samples/*
 /[Aa]ssets/Samples.meta
