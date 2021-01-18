@@ -75,3 +75,5 @@ crashlytics-build.properties
 /[Aa]ssets/OtherDemos/DemoScenes.meta
 /[Aa]ssets/Samples/*
 /[Aa]ssets/Samples.meta
+[Aa]ssets/Blender/*
+[Aa]ssets/Blender.meta

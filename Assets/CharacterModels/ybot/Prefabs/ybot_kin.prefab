@@ -1111,6 +1111,7 @@ GameObject:
   - component: {fileID: 2757725530345031692}
   - component: {fileID: 2757725530345031693}
   - component: {fileID: 579914556}
+  - component: {fileID: 640828794}
   m_Layer: 0
   m_Name: ybot_kin
   m_TagString: Player
@@ -1167,7 +1168,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 2
   m_Height: 1.8
-  m_Radius: 0.3
+  m_Radius: 0.18
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.03
@@ -1227,6 +1228,89 @@ MonoBehaviour:
   rightFootAnimVariableName: RightFootCurve
   useProIKFeature: 1
   showSolverDebug: 1
+--- !u!114 &640828794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3063574830781488153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2d8418b0b9634b1892b0268dd9c2743, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boneShape: 1
+  drawBones: 1
+  drawTripods: 0
+  boneSize: 1
+  tripodSize: 1
+  boneColor: {r: 0, g: 0, b: 1, a: 0.5}
+  m_Transforms:
+  - {fileID: 7899176803975095863}
+  - {fileID: 414612828847595339}
+  - {fileID: 6276349568398610696}
+  - {fileID: 7635706540229039524}
+  - {fileID: 3957193850155893068}
+  - {fileID: 2544958898120405287}
+  - {fileID: 8946714526217878874}
+  - {fileID: 8620808089076732960}
+  - {fileID: 563831304969937340}
+  - {fileID: 8509762858058691184}
+  - {fileID: 4652826071071317937}
+  - {fileID: 8969213421172126859}
+  - {fileID: 6112901051857032864}
+  - {fileID: 8688527888997661538}
+  - {fileID: 750864618909222741}
+  - {fileID: 5213059840206478966}
+  - {fileID: 6938737124901317918}
+  - {fileID: 473253149564240018}
+  - {fileID: 2888073022810979582}
+  - {fileID: 1070993140208456019}
+  - {fileID: 3761248929801284260}
+  - {fileID: 5485644006053874944}
+  - {fileID: 4637146882750922611}
+  - {fileID: 3034416238155580886}
+  - {fileID: 9059621390234202391}
+  - {fileID: 3743310344376500091}
+  - {fileID: 1667688505151731699}
+  - {fileID: 6108900958002544458}
+  - {fileID: 7468827387223827661}
+  - {fileID: 8798279727210028799}
+  - {fileID: 3913052787940641796}
+  - {fileID: 2354764943909239554}
+  - {fileID: 4934190493569439957}
+  - {fileID: 8430969459974487629}
+  - {fileID: 420583174299686112}
+  - {fileID: 4607397957823110784}
+  - {fileID: 1486823948276789923}
+  - {fileID: 9098756009173794372}
+  - {fileID: 729727488802150482}
+  - {fileID: 3255161289233449313}
+  - {fileID: 6016661726389204406}
+  - {fileID: 6174257020691454421}
+  - {fileID: 4434743373991923794}
+  - {fileID: 2667364771641197056}
+  - {fileID: 6296086620006393838}
+  - {fileID: 1561288236408199491}
+  - {fileID: 6987361125145373194}
+  - {fileID: 5208589745616552085}
+  - {fileID: 6397678277657151044}
+  - {fileID: 8180304693648703948}
+  - {fileID: 2984878661306018333}
+  - {fileID: 433284783221475322}
+  - {fileID: 3947237788948719904}
+  - {fileID: 7838525672323227156}
+  - {fileID: 312725524219875104}
+  - {fileID: 8248636469531815576}
+  - {fileID: 7658286546359283602}
+  - {fileID: 3329384607360567092}
+  - {fileID: 1025929549045626848}
+  - {fileID: 5323537148174964546}
+  - {fileID: 5006817818516342677}
+  - {fileID: 494825859507404665}
+  - {fileID: 9208161371217121766}
+  - {fileID: 2187903319481783344}
 --- !u!1 &3568280447421649347
 GameObject:
   m_ObjectHideFlags: 0
