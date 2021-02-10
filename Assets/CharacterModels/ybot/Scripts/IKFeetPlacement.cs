@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
-[RequireComponent(typeof(CharacterController))]
+//[RequireComponent(typeof(CharacterController))]
 public class IKFeetPlacement : MonoBehaviour
 {
     #region Variables
 
     public Animator anim;
-    public CharacterController controller;
+    //public CharacterController controller;
 
     [Header("Feet Positions")]
     private Vector3 rightFootPosition;
@@ -42,7 +42,7 @@ public class IKFeetPlacement : MonoBehaviour
     {
         // Getting components from Inspector.
         anim = GetComponent<Animator>();
-        controller = GetComponent<CharacterController>();
+        //controller = GetComponent<CharacterController>();
 
         // Set Environment Layer
         environmentLayer = LayerMask.GetMask("Ground");
