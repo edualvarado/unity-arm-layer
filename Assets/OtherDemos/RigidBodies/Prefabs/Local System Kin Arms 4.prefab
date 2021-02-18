@@ -6247,12 +6247,16 @@ MonoBehaviour:
   physicalBones: []
   physicalLeftArm: {fileID: 8345678413751821328}
   physicalRightArm: {fileID: 5410710026454153694}
+  physicalHips: {fileID: 2512907009010302781}
   physicalLeftArmBones: []
   physicalRightArmBones: []
+  physicalHipsBones: []
   kinematicLeftArm: {fileID: 7618115170253064560}
   kinematicRightArm: {fileID: 889295451997802098}
+  kinematicHips: {fileID: 7597083311146128307}
   kinematicLeftArmBones: []
   kinematicRightArmBones: []
+  kinematicHipsBones: []
   leftPhysicalShoulder: {fileID: 6532589024608597951}
   rightPhysicalShoulder: {fileID: 6532589023540003941}
   leftKinematicMatchingPart: {fileID: 3018180285059695638}
