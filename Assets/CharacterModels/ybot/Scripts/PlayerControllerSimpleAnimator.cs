@@ -5,30 +5,30 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerControllerSimpleAnimator : MonoBehaviour
 {
+    // Need to desactivate Root Motion and Gravity in RB when using this script.
 
     #region Variables
 
-    [Header("Components")]
-    public CharacterController _controller;
-    public Rigidbody _body; // NEW
+    [Header("Options")]
+    public Rigidbody _body;
     public Transform rootKinematicSkeleton;
+    public CharacterController _controller;
+    public Vector3 moveDirection;
+    public Vector3 _inputs = Vector3.zero;
+    public bool shooterCameraMode = false;
+    public float moveSpeed = 1.0f;
+    public float rotationSpeed = 280f;
 
-    [Header("Motion")]
-    public float Speed = 5f;
     //public float JumpHeight = 2f;
-    //public float Gravity = -9.81f;
-    //public float GroundDistance = 0.2f;
     //public float DashDistance = 5f;
-    //public LayerMask Ground;
-    //public Vector3 Drag;
-    public Vector3 _inputs = Vector3.zero; // NEW
-    public Vector3 _velocity;
 
-    [Header("Grounder")]
-    public bool _isGrounded = true;
+    [Header("Ground")]
     public Transform _groundChecker;
+    public bool _isGrounded = true;
     public float GroundDistance = 0.2f;
     public LayerMask Ground;
+    public Vector3 _velocity;
+    //public float Gravity = -9.81f;
 
     [Header("Animation")]
     public Animator _anim;
@@ -45,9 +45,9 @@ public class PlayerControllerSimpleAnimator : MonoBehaviour
 
     void Start()
     {
-        _controller = GetComponent<CharacterController>();
         _body = GetComponent<Rigidbody>();
         _anim = GetComponent<Animator>();
+        _controller = GetComponent<CharacterController>();
 
         _groundChecker = transform.GetChild(transform.childCount - 1); // Since we disable gravity in our RB, we use to check ground
 
@@ -57,25 +57,58 @@ public class PlayerControllerSimpleAnimator : MonoBehaviour
 
     void Update()
     {
-
-
+        // Is grounded? If not, apply gravity.
         _isGrounded = Physics.CheckSphere(_groundChecker.position, GroundDistance, Ground, QueryTriggerInteraction.Ignore);
-        if (_isGrounded && _velocity.y < 0)
-            _velocity.y = 0f;
+        //if (_isGrounded && _velocity.y < 0)
+        //    _velocity.y = 0f;
 
+        // User input
+        _inputs = Vector3.zero;
         _inputs.x = Input.GetAxis("Horizontal");
         _inputs.z = Input.GetAxis("Vertical");
 
-        Vector3 move = new Vector3(_inputs.x, 0, _inputs.z);
-        _controller.Move(move * Time.deltaTime * Speed);
-        if (move != Vector3.zero)
-            transform.forward = move;
+        // Direction of the character with respect to the input (e.g. W = (0,0,1))
+        moveDirection = Vector3.forward * _inputs.z + Vector3.right * _inputs.x;
+        //Debug.Log("moveDirection 1: " + moveDirection);
 
-        // Animation
+        // 1) Rotate with respect to the camera: Calculate camera projection on ground -> Change direction to be with respect to camera.
+        Vector3 projectedCameraForward = Vector3.ProjectOnPlane(Camera.main.transform.forward, Vector3.up);
+        Quaternion rotationToCamera = Quaternion.LookRotation(projectedCameraForward, Vector3.up);
+        moveDirection = rotationToCamera * moveDirection;
+        //Debug.Log("moveDirection 2: " + moveDirection);
+
+        // 2) How to rotate the character: In shooter mode, the character rotates such that always points to the forward of the camera.
+        if (shooterCameraMode)
+        {
+            if (_inputs != Vector3.zero)
+            {
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, rotationToCamera, rotationSpeed * Time.deltaTime);
+            }
+        }
+        else
+        {
+            if (_inputs != Vector3.zero)
+            {
+                Quaternion rotationToMoveDirection = Quaternion.LookRotation(moveDirection, Vector3.up);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, rotationToMoveDirection, rotationSpeed * Time.deltaTime);
+            }
+        }
+
+        // Animation Part 
+        if (_inputs != Vector3.zero)
+        {
+            _anim.SetBool("isWalking", true);
+        }
+        else
+        {
+            _anim.SetBool("isWalking", false);
+        }
+
         _anim.SetFloat("InputX", _inputs.x, 0.0f, Time.deltaTime);
         _anim.SetFloat("InputZ", _inputs.z, 0.0f, Time.deltaTime);
-        inputMagnitude = new Vector2(_inputs.x, _inputs.z).sqrMagnitude;
-        inputMagnitude = Mathf.Clamp(inputMagnitude, 0, 1);
+
+        _inputs.Normalize();
+        inputMagnitude = _inputs.sqrMagnitude;
         _anim.SetFloat("InputMagnitude", inputMagnitude, 0.0f, Time.deltaTime);
 
         /*
@@ -97,10 +130,16 @@ public class PlayerControllerSimpleAnimator : MonoBehaviour
 
         _controller.Move(_velocity * Time.deltaTime);
         */
+
+        _controller.Move(moveDirection * Time.deltaTime * moveSpeed);
+
     }
 
     private void FixedUpdate()
     {
+        // We don't need to push the RB - root motion moves the character though animations.
+        if (applyMove)
+            _body.MovePosition(_body.position + _inputs * moveSpeed * Time.fixedDeltaTime);
 
         /*
          * Use Rigidbody.MoveRotation to rotate a Rigidbody, complying with the Rigidbody's interpolation setting.

@@ -6,17 +6,23 @@ public class RigidBodyControllerSimpleAnimator : MonoBehaviour
 {
     #region Variables
 
-    public float Speed = 5f;
-    //public float JumpHeight = 2f;
-    //public float GroundDistance = 0.2f;
-    //public float DashDistance = 5f;
-    //public LayerMask Ground;
-
+    [Header("Options")]
     public Rigidbody _body;
-    private Vector3 _inputs = Vector3.zero;
     public Transform rootKinematicSkeleton;
-    //private bool _isGrounded = true;
-    //private Transform _groundChecker;
+    public Vector3 moveDirection;
+    public Vector3 _inputs = Vector3.zero;
+    public bool shooterCameraMode = false;
+    public float moveSpeed = 1.0f;
+    public float rotationSpeed = 280f;
+
+    //public float JumpHeight = 2f;
+    //public float DashDistance = 5f;
+
+    [Header("Ground")]
+    public Transform _groundChecker;
+    public bool _isGrounded = true;
+    public float GroundDistance = 0.2f;
+    public LayerMask Ground;
 
     [Header("Animation")]
     public Animator _anim;
@@ -35,7 +41,10 @@ public class RigidBodyControllerSimpleAnimator : MonoBehaviour
     {
         _body = GetComponent<Rigidbody>();
         _anim = GetComponent<Animator>();
+
+        // Now, it needs to take it from Inspector
         //_groundChecker = transform.GetChild(0);
+        //_groundChecker = transform.GetChild(transform.childCount - 1); // Since we disable gravity in our RB, we use to check ground
 
         // Set CoM for lower-body into the hips
         _body.centerOfMass = rootKinematicSkeleton.localPosition;
@@ -43,21 +52,62 @@ public class RigidBodyControllerSimpleAnimator : MonoBehaviour
 
     void Update()
     {
-        //_isGrounded = Physics.CheckSphere(_groundChecker.position, GroundDistance, Ground, QueryTriggerInteraction.Ignore);
+        // Is grounded?
+        _isGrounded = Physics.CheckSphere(_groundChecker.position, GroundDistance, Ground, QueryTriggerInteraction.Ignore);
 
+        // User input
         _inputs = Vector3.zero;
         _inputs.x = Input.GetAxis("Horizontal");
         _inputs.z = Input.GetAxis("Vertical");
-        
+
+        // Direction of the character with respect to the input (e.g. W = (0,0,1))
+        moveDirection = Vector3.forward * _inputs.z + Vector3.right * _inputs.x;
+        //Debug.Log("moveDirection 1: " + moveDirection);
+
+        // 1) Rotate with respect to the camera: Calculate camera projection on ground -> Change direction to be with respect to camera.
+        Vector3 projectedCameraForward = Vector3.ProjectOnPlane(Camera.main.transform.forward, Vector3.up);
+        Quaternion rotationToCamera = Quaternion.LookRotation(projectedCameraForward, Vector3.up);
+        moveDirection = rotationToCamera * moveDirection;
+        //Debug.Log("moveDirection 2: " + moveDirection);
+
+        // 2) How to rotate the character: In shooter mode, the character rotates such that always points to the forward of the camera.
+        if (shooterCameraMode)
+        {
+            if (_inputs != Vector3.zero)
+            {
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, rotationToCamera, rotationSpeed * Time.deltaTime);
+            }
+        }
+        else
+        {
+            if (_inputs != Vector3.zero)
+            {
+                Quaternion rotationToMoveDirection = Quaternion.LookRotation(moveDirection, Vector3.up);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, rotationToMoveDirection, rotationSpeed * Time.deltaTime);
+            }
+        }
+
+        // We don't need to manipulate the transform - root motion moves the character though animations.
+        // Onle in shooter mode, if you don't have the animations for lateral movement, you will need to move it this way.
+        transform.position += moveDirection * moveSpeed * Time.deltaTime;
+
+        // Animation Part
         if (_inputs != Vector3.zero)
-            transform.forward = _inputs;
+        {
+            _anim.SetBool("isWalking", true);
+        }
+        else
+        {
+            _anim.SetBool("isWalking", false);
+        }
 
         _anim.SetFloat("InputX", _inputs.x, 0.0f, Time.deltaTime);
         _anim.SetFloat("InputZ", _inputs.z, 0.0f, Time.deltaTime);
 
-        inputMagnitude = new Vector2(_inputs.x, _inputs.z).sqrMagnitude;
-        inputMagnitude = Mathf.Clamp(inputMagnitude, 0, 1);
+        _inputs.Normalize();
+        inputMagnitude = _inputs.sqrMagnitude;
         _anim.SetFloat("InputMagnitude", inputMagnitude, 0.0f, Time.deltaTime);
+        
 
         /*
         if (Input.GetButtonDown("Jump") && _isGrounded)
@@ -74,9 +124,9 @@ public class RigidBodyControllerSimpleAnimator : MonoBehaviour
 
     void FixedUpdate()
     {
+        // We don't need to push the RB - root motion moves the character though animations.
         if (applyMove)
-            _body.MovePosition(_body.position + _inputs * Speed * Time.fixedDeltaTime);
-
+            _body.MovePosition(_body.position + _inputs * moveSpeed * Time.fixedDeltaTime);
 
         /*
          * Use Rigidbody.MoveRotation to rotate a Rigidbody, complying with the Rigidbody's interpolation setting.
@@ -97,9 +147,5 @@ public class RigidBodyControllerSimpleAnimator : MonoBehaviour
         {
             _body.AddTorque(torque * transform.up);
         }
-
-
-
-
     }
 }

@@ -29,8 +29,8 @@ namespace DynamicRagdoll {
 				
                 RagdollTransform bone = bones[hBodyBone];
 
-				
-                //set rigidbody values for bone
+
+				//set rigidbody values for bone
 				UpdateRigidbodyToProfile(bone.rigidbody, boneProfile);
 				
 				//adjust collider values for bone
@@ -138,7 +138,8 @@ namespace DynamicRagdoll {
 			joint.angularZLimit = l;
 		}
 		static void UpdateRigidbodyToProfile (Rigidbody rigidbody, RagdollProfile.BoneProfile boneProfile) {
-			
+
+
 			//set rigidbody values for bone
 			rigidbody.maxAngularVelocity = boneProfile.maxAngularVelocity;
 			rigidbody.angularDrag = boneProfile.angularDrag;
