@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class FollowAt : MonoBehaviour
 {
-    [SerializeField] GameObject followAt;
-    [SerializeField] Vector3 cameraOffset = new Vector3(0f,2f,-2f);
+    public GameObject followAt;
+    public Vector3 cameraOffset = new Vector3(0f,2f,-2f);
 
     // Start is called before the first frame update
     void Start()

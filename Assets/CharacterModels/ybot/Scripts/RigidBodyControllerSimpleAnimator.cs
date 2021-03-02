@@ -12,6 +12,7 @@ public class RigidBodyControllerSimpleAnimator : MonoBehaviour
     public Vector3 moveDirection;
     public Vector3 _inputs = Vector3.zero;
     public bool shooterCameraMode = false;
+    public bool blockCamera = false;
     public float moveSpeed = 1.0f;
     public float rotationSpeed = 280f;
 
@@ -34,6 +35,8 @@ public class RigidBodyControllerSimpleAnimator : MonoBehaviour
     public Vector3 m_EulerAngleVelocity = new Vector3(0, 100, 0);
     public bool applyTorque = false;
     public float torque;
+    public float timer;
+    public float signRotation = 1f;
 
     #endregion
 
@@ -52,6 +55,7 @@ public class RigidBodyControllerSimpleAnimator : MonoBehaviour
 
     void Update()
     {
+
         // Is grounded?
         _isGrounded = Physics.CheckSphere(_groundChecker.position, GroundDistance, Ground, QueryTriggerInteraction.Ignore);
 
@@ -75,7 +79,8 @@ public class RigidBodyControllerSimpleAnimator : MonoBehaviour
         {
             if (_inputs != Vector3.zero)
             {
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, rotationToCamera, rotationSpeed * Time.deltaTime);
+                if(!blockCamera)
+                    transform.rotation = Quaternion.RotateTowards(transform.rotation, rotationToCamera, rotationSpeed * Time.deltaTime);
             }
         }
         else
@@ -83,7 +88,8 @@ public class RigidBodyControllerSimpleAnimator : MonoBehaviour
             if (_inputs != Vector3.zero)
             {
                 Quaternion rotationToMoveDirection = Quaternion.LookRotation(moveDirection, Vector3.up);
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, rotationToMoveDirection, rotationSpeed * Time.deltaTime);
+                if (!blockCamera)
+                    transform.rotation = Quaternion.RotateTowards(transform.rotation, rotationToMoveDirection, rotationSpeed * Time.deltaTime);
             }
         }
 
@@ -135,8 +141,16 @@ public class RigidBodyControllerSimpleAnimator : MonoBehaviour
          */
         if (applyRotation)
         {
-            Quaternion deltaRotation = Quaternion.Euler(m_EulerAngleVelocity * Time.deltaTime);
+            timer += Time.deltaTime;
+
+            Quaternion deltaRotation = Quaternion.Euler(signRotation * m_EulerAngleVelocity * Time.deltaTime);
             _body.MoveRotation(_body.rotation * deltaRotation);
+
+            if (timer > 1)
+            {
+                timer = 0f;
+                signRotation = -signRotation;
+            }
         }
 
         /*

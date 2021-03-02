@@ -44,7 +44,7 @@ MonoBehaviour:
         showJointsEditor: 0
         showRBEditor: 1
         showColliderEditor: 1
-    - editorShown: 0
+    - editorShown: 1
       bone: 8
       boneData:
         massScale: 1
