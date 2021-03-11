@@ -13,6 +13,7 @@ public class RigidBodyControllerSimpleAnimator : MonoBehaviour
     public Vector3 _inputs = Vector3.zero;
     public bool shooterCameraMode = false;
     public bool blockCamera = false;
+    public bool applyTransformPosition;
     public float moveSpeed = 1.0f;
     public float rotationSpeed = 280f;
 
@@ -95,7 +96,12 @@ public class RigidBodyControllerSimpleAnimator : MonoBehaviour
 
         // We don't need to manipulate the transform - root motion moves the character though animations.
         // Onle in shooter mode, if you don't have the animations for lateral movement, you will need to move it this way.
-        transform.position += moveDirection * moveSpeed * Time.deltaTime;
+        //if(applyTransformPosition)
+        //{
+        //    transform.position += moveDirection * moveSpeed * Time.deltaTime;
+        //}
+
+
 
         // Animation Part
         if (_inputs != Vector3.zero)
@@ -130,6 +136,12 @@ public class RigidBodyControllerSimpleAnimator : MonoBehaviour
 
     void FixedUpdate()
     {
+        // Need to apply movement in FixedUpdate????
+        if (applyTransformPosition)
+        {
+            transform.position += moveDirection * moveSpeed * Time.fixedDeltaTime;
+        }
+
         // We don't need to push the RB - root motion moves the character though animations.
         if (applyMove)
             _body.MovePosition(_body.position + _inputs * moveSpeed * Time.fixedDeltaTime);

@@ -11,14 +11,22 @@ public class DisplayRigidBody : MonoBehaviour
     public Vector3 local_com;
     public Vector3 global_com;
 
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+
+        rb.ResetCenterOfMass();
+        rb.ResetInertiaTensor();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+
     }
 
-    // Update is called once per frame
-    void Update()
+        // Update is called once per frame
+        void Update()
     {
         /*
         If you don't set the center of mass from a script it will be calculated automatically from all colliders attached to the rigidbody. 

@@ -22,7 +22,6 @@ namespace DynamicRagdoll {
         public Quaternion originalRotation;
         public Vector3 originalPosition;
 
-
         /*
             Keeps the joints together at high velocities....
         */
@@ -39,7 +38,6 @@ namespace DynamicRagdoll {
         public bool RigidbodyGrabbed () {
             return RagdollPhysics.RigidbodyGrabbed(rigidbody);
         }
-
 
         public void OnStart () {
             originalRotation = transform.localRotation;
@@ -69,8 +67,9 @@ namespace DynamicRagdoll {
                 }
             }
             
-        }	
-        
+        }
+
+        // ==================================== From here...
         public void SetFollowTarget(RagdollTransform followTarget) {
             this.followTarget = followTarget;
         }
@@ -85,6 +84,7 @@ namespace DynamicRagdoll {
             TeleportTo(snapshotPosition, snapshotRotation);
         }
 
+        // Included!
         public void EnableJointLimits(ConfigurableJointMotion m) {
             if (joint) {
                 joint.angularXMotion = joint.angularYMotion = joint.angularZMotion = m;
@@ -170,6 +170,9 @@ namespace DynamicRagdoll {
                 Quaternion.Slerp(element.GetRotation(), snapshotRotation, snapshotBlend)
             );
         }
+
+        // ==================================== ...to here.
+
 
         Quaternion GetRotation () {
             return isRoot ? transform.rotation : transform.localRotation;

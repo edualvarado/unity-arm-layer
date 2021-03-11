@@ -22,65 +22,43 @@ public class SetSkeletons : MonoBehaviour
     public List<Transform> physicalLowerBones = new List<Transform>();
     public List<Transform> physicalUpperBones = new List<Transform>();
 
-    
-    [Header("Variable Skeleton")]
-    [SerializeField] private Transform rootVariableSkeleton;
-    [SerializeField] private GameObject variableSpine;
-    public List<Transform> variableLowerBones = new List<Transform>();
-    public List<Transform> variableUpperBones = new List<Transform>();
-
-    /* TEST */
-    [Header("Variable Physical Skeleton")]
-    public Transform rootVariablePhysicalSkeleton;
-    public GameObject variablePhysicalSpine;
-    //public GameObject physicalSpine1;
-    public List<Transform> variablePhysicalLowerBones = new List<Transform>();
-    public List<Transform> variablePhysicalUpperBones = new List<Transform>();
-    
+    [Header("Interpolated Skeleton")]
+    [SerializeField] private Transform rootInterpolatedSkeleton;
+    [SerializeField] private GameObject interpolatedSpine;
+    public List<Transform> interpolatedLowerBones = new List<Transform>();
+    public List<Transform> interpolatedUpperBones = new List<Transform>();
 
     [Header("Connector")]
     public GameObject hipConnector;
 
-    //public Rigidbody _rbHips;
-
     #endregion
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         InitSkeletons();
+    }
 
-        //_rbHips = rootPhysicalSkeleton.GetComponent<Rigidbody>();
+    // Start when is called the first frame update
+    private void Start()
+    {
+        
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        // Always match (for now) lower-body
-        SyncBones(kinematicLowerBones, physicalLowerBones);
+        // Sync lower-body
+        //SyncBones(kinematicLowerBones, physicalLowerBones);
+        //SyncBones(kinematicLowerBones, interpolatedLowerBones);
+
+        // Should we fix by hard-code the root and first spine bone for both skeletons? -> Produce vibrations
+        //rootPhysicalSkeleton.position = rootKinematicSkeleton.position;
+        //rootPhysicalSkeleton.rotation = rootKinematicSkeleton.rotation;
 
         // Only if third skeleton is available
-        SyncBones(kinematicLowerBones, variableLowerBones);
-
-        // TEST
-        SyncBones(kinematicLowerBones, variablePhysicalLowerBones);
-        //SyncBones(variableUpperBones, variablePhysicalUpperBones);
-
-        // Should we fix by hard-code the root and first spine bone for both skeletons?
-        rootPhysicalSkeleton.position = rootKinematicSkeleton.position;
-
-        // Only if third skeleton is available
-        rootVariableSkeleton.position = rootKinematicSkeleton.position;
-
-        // TEST
-        // Only if third skeleton is available
-        rootVariablePhysicalSkeleton.position = rootKinematicSkeleton.position;
-
-        // Don't need to attach first spine
-        //physicalSpine.transform.position = kinematicSpine.transform.position;
-        //variableSpine.transform.position = kinematicSpine.transform.position;
-        //physicalSpine1.transform.position = kinematicSpine1.transform.position;
-
+        //rootInterpolatedSkeleton.position = rootKinematicSkeleton.position;
+        //rootInterpolatedSkeleton.rotation = rootKinematicSkeleton.rotation;
     }
 
     /// <summary>
@@ -91,73 +69,8 @@ public class SetSkeletons : MonoBehaviour
         // Create list of skeletons
         CreateKinematicSkeletons();
         CreatePhysicalSkeletons();
-        CreateVariableSkeletons();
-
-        // TEST
-        CreateVariablePhysicalSkeletons();
-
-        // Posible error -> Putting colliders manually first to see if it works
-        // Let initialize the colliders of the upper-body and then disable them, since we use the variable upper-body for collisions.
-        //DisableUpperColliders();
+        CreateInterpolatedSkeleton();
     }
-
-    /* Not used
-    private void DisableUpperColliders()
-    {
-        int idx = 0;
-        foreach (Transform tfm in physicalUpperBones)
-        {
-
-            if(tfm.gameObject.GetComponent<BoxCollider>())
-            {
-                BoxCollider copy = tfm.gameObject.GetComponent<BoxCollider>();
-                Vector3 size = copy.size;
-                Vector3 center = copy.center;
-
-                /// ->
-
-                variableUpperBones[idx].gameObject.AddComponent<BoxCollider>();
-                variableUpperBones[idx].gameObject.GetComponent<BoxCollider>().size = size;
-                variableUpperBones[idx].gameObject.GetComponent<BoxCollider>().center = center;
-
-                ///
-
-                //tfm.gameObject.GetComponent<BoxCollider>().enabled = !tfm.gameObject.GetComponent<BoxCollider>().enabled;
-            }
-            else if(tfm.gameObject.GetComponent<CapsuleCollider>())
-            {
-                CapsuleCollider copy = tfm.gameObject.GetComponent<CapsuleCollider>();
-                Vector3 center = copy.center;
-                float radius = copy.radius;
-                float height = copy.height;
-                int direction = copy.direction;
-
-                variableUpperBones[idx].gameObject.AddComponent<CapsuleCollider>();
-                variableUpperBones[idx].gameObject.GetComponent<CapsuleCollider>().center = center;
-                variableUpperBones[idx].gameObject.GetComponent<CapsuleCollider>().radius = radius;
-                variableUpperBones[idx].gameObject.GetComponent<CapsuleCollider>().height = height;
-                variableUpperBones[idx].gameObject.GetComponent<CapsuleCollider>().direction = direction;
-
-                //tfm.gameObject.GetComponent<CapsuleCollider>().enabled = !tfm.gameObject.GetComponent<CapsuleCollider>().enabled;
-
-            }
-            else if(tfm.gameObject.GetComponent<SphereCollider>())
-            {
-                SphereCollider copy = tfm.gameObject.GetComponent<SphereCollider>();
-                Vector3 center = copy.center;
-                float radius = copy.radius;
-
-                variableUpperBones[idx].gameObject.AddComponent<SphereCollider>();
-                variableUpperBones[idx].gameObject.GetComponent<SphereCollider>().center = center;
-                variableUpperBones[idx].gameObject.GetComponent<SphereCollider>().radius = radius;
-
-                //tfm.gameObject.GetComponent<SphereCollider>().enabled = !tfm.gameObject.GetComponent<SphereCollider>().enabled;
-            }
-
-            idx++;
-        }
-    }
-    */
 
     /// <summary>
     /// Divide the kinematic skeleton in upper- and lower-body parts.
@@ -197,39 +110,22 @@ public class SetSkeletons : MonoBehaviour
 
     
     /// <summary>
-    /// Divide the variable visible skeleton in upper- and lower-body parts.
+    /// Divide the interpolated visible skeleton in upper- and lower-body parts.
     /// </summary>
-    private void CreateVariableSkeletons()
+    private void CreateInterpolatedSkeleton()
     {
-        FindPhysicalLowerSkeletonConstant(rootVariableSkeleton);
+        FindPhysicalLowerSkeletonConstant(rootInterpolatedSkeleton);
         for (int i = 0; i < physicalLowerBones.Count; i++)
         {
-            FindPhysicalLowerSkeletonConstant(variableLowerBones[i]);
+            FindPhysicalLowerSkeletonConstant(interpolatedLowerBones[i]);
         }
 
-        FindPhysicalUpperSkeletonConstant(variableUpperBones[0]);
-        for (int i = 1; i < variableUpperBones.Count; i++)
+        FindPhysicalUpperSkeletonConstant(interpolatedUpperBones[0]);
+        for (int i = 1; i < interpolatedUpperBones.Count; i++)
         {
-            FindPhysicalUpperSkeletonConstant(variableUpperBones[i]);
+            FindPhysicalUpperSkeletonConstant(interpolatedUpperBones[i]);
         }
     }
-
-    // TEST
-    private void CreateVariablePhysicalSkeletons()
-    {
-        FindVariablePhysicalLowerSkeletonConstant(rootVariablePhysicalSkeleton);
-        for (int i = 0; i < variablePhysicalLowerBones.Count; i++)
-        {
-            FindVariablePhysicalLowerSkeletonConstant(variablePhysicalLowerBones[i]);
-        }
-
-        FindVariablePhysicalUpperSkeletonConstant(variablePhysicalUpperBones[0]);
-        for (int i = 1; i < variablePhysicalUpperBones.Count; i++)
-        {
-            FindVariablePhysicalUpperSkeletonConstant(variablePhysicalUpperBones[i]);
-        }
-    }
-
 
     /// <summary>
     /// Deep search thought the kinematic lower-skeleton
@@ -307,7 +203,7 @@ public class SetSkeletons : MonoBehaviour
 
     
     /// <summary>
-    /// Deep search thought the variable visible lower-skeleton
+    /// Deep search thought the interpolated visible lower-skeleton
     /// </summary>
     /// <param name="rootPhysicalConstant"></param>
     public void FindPhysicalLowerSkeletonConstant(Transform rootPhysicalConstant)
@@ -315,9 +211,9 @@ public class SetSkeletons : MonoBehaviour
         int count = rootPhysicalConstant.childCount;
         for (int i = 0; i < count; i++)
         {
-            if (rootPhysicalConstant.GetChild(i).gameObject == variableSpine)
+            if (rootPhysicalConstant.GetChild(i).gameObject == interpolatedSpine)
             {
-                variableUpperBones.Add(rootPhysicalConstant.GetChild(i));
+                interpolatedUpperBones.Add(rootPhysicalConstant.GetChild(i));
             }
             else if (rootPhysicalConstant.GetChild(i).gameObject == hipConnector)
             {
@@ -325,13 +221,13 @@ public class SetSkeletons : MonoBehaviour
             }
             else
             {
-                variableLowerBones.Add(rootPhysicalConstant.GetChild(i));
+                interpolatedLowerBones.Add(rootPhysicalConstant.GetChild(i));
             }
         }
     }
 
     /// <summary>
-    /// Deep search thought the variable visible upper skeleton
+    /// Deep search thought the interpolated visible upper skeleton
     /// </summary>
     /// <param name="rootPhysicalConstant"></param>
     public void FindPhysicalUpperSkeletonConstant(Transform rootPhysicalConstant)
@@ -339,46 +235,7 @@ public class SetSkeletons : MonoBehaviour
         int count = rootPhysicalConstant.childCount;
         for (int i = 0; i < count; i++)
         {
-            variableUpperBones.Add(rootPhysicalConstant.GetChild(i));
-        }
-    }
-
-
-    // TEST
-    /// <summary>
-    /// Deep search thought the variable visible lower-skeleton
-    /// </summary>
-    /// <param name="rootPhysicalConstant"></param>
-    public void FindVariablePhysicalLowerSkeletonConstant(Transform rootVariablePhysicalConstant)
-    {
-        int count = rootVariablePhysicalConstant.childCount;
-        for (int i = 0; i < count; i++)
-        {
-            if (rootVariablePhysicalConstant.GetChild(i).gameObject == variablePhysicalSpine)
-            {
-                variablePhysicalUpperBones.Add(rootVariablePhysicalConstant.GetChild(i));
-            }
-            else if (rootVariablePhysicalConstant.GetChild(i).gameObject == hipConnector)
-            {
-                continue;
-            }
-            else
-            {
-                variablePhysicalLowerBones.Add(rootVariablePhysicalConstant.GetChild(i));
-            }
-        }
-    }
-
-    /// <summary>
-    /// Deep search thought the variable visible upper skeleton
-    /// </summary>
-    /// <param name="rootPhysicalConstant"></param>
-    public void FindVariablePhysicalUpperSkeletonConstant(Transform rootVariablePhysicalConstant)
-    {
-        int count = rootVariablePhysicalConstant.childCount;
-        for (int i = 0; i < count; i++)
-        {
-            variablePhysicalUpperBones.Add(rootVariablePhysicalConstant.GetChild(i));
+            interpolatedUpperBones.Add(rootPhysicalConstant.GetChild(i));
         }
     }
 
@@ -393,6 +250,7 @@ public class SetSkeletons : MonoBehaviour
         foreach (Transform trf in fromBones)
         {
             trf.position = toBones[idx].position;
+            trf.rotation = toBones[idx].rotation;
             idx++;
         }
     }

@@ -40,6 +40,7 @@ namespace DynamicRagdoll {
 			keep the joints at their original local position
 		*/
 
+		// Not added
 		void PerformJointFix () {
 			float jointFixMagnitude2 = ragdollProfile.jointFixMagnitude2;
 			if (RigidbodyGrabbed()) {
@@ -48,12 +49,15 @@ namespace DynamicRagdoll {
 				}
 			}
 		}
+
+		// Not added
 		void LateUpdate () {
 			if (ragdollProfile.jointFixEnabled) {
 				PerformJointFix();
 			}
 		}
-		
+
+		// Not added
 		public void ForceDetach () {
 			for (int i =0 ; i < bonesCount; i++) {
 				RagdollPhysics.DetachRigidbody(allElements[i].rigidbody, null, true);
@@ -72,6 +76,7 @@ namespace DynamicRagdoll {
 			}
 		}
 
+		// Not added
 		public bool RigidbodyGrabbed () {
 			for (int i =0 ; i< bonesCount; i++) {
 				if (allElements[i].RigidbodyGrabbed()) {
@@ -192,6 +197,7 @@ namespace DynamicRagdoll {
 		
 
 		
+		// ==================================== From here...
 
 		public RagdollController controller;
 		public void SetController (RagdollController controller) {
@@ -199,8 +205,8 @@ namespace DynamicRagdoll {
 		}
 		public bool hasController { get { return controller != null; } }
 
+		// ==================================== to here.
 
-		
 
 		/*
 			the total mass of all the ragdoll rigidbodies
@@ -216,6 +222,7 @@ namespace DynamicRagdoll {
 			return m;
 		}
 
+		// ==================================== From here...
 
 		/*
 			save the positions and rotations of all the elements
@@ -245,6 +252,9 @@ namespace DynamicRagdoll {
 				allElements[i].LoadSnapshot(snapshotBlend, useFollowTarget);
 			}
 		}
+
+		// ==================================== to here.
+
 
 		/*
 			enable or disable ragdoll renderers
@@ -368,9 +378,11 @@ namespace DynamicRagdoll {
 			}
 		}
 
+		// ==================================== From here...
+
 		//update values during runtime (if not in build)
 		//for easier adjustments
-		#if UNITY_EDITOR
+#if UNITY_EDITOR
 		[Header("Editor Only")] public bool setValuesUpdate = true;
 		void Update () {
 			if (setValuesUpdate) {
@@ -388,8 +400,11 @@ namespace DynamicRagdoll {
 				// }
 			}
 		}
-		#endif
-		
-    }
+#endif
+
+		// ==================================== to here.
+
+
+	}
 }
 

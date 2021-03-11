@@ -6167,6 +6167,10 @@ MonoBehaviour:
   variableSpine: {fileID: 2024820044739209320}
   variableLowerBones: []
   variableUpperBones: []
+  rootVariablePhysicalSkeleton: {fileID: 0}
+  variablePhysicalSpine: {fileID: 0}
+  variablePhysicalLowerBones: []
+  variablePhysicalUpperBones: []
   hipConnector: {fileID: 7459322982184086581}
 --- !u!114 &1936967554034625705
 MonoBehaviour:
@@ -8650,7 +8654,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5700628982450858481
 Transform:
   m_ObjectHideFlags: 0

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class throwball : MonoBehaviour
+public class ThrowBall : MonoBehaviour
 {
     public Rigidbody bullet;
     float elapsed = 0f;

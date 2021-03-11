@@ -18,7 +18,7 @@ MonoBehaviour:
   headOffset: {x: 0, y: -0.05, z: 0}
   boneData:
     boneDatas:
-    - editorShown: 0
+    - editorShown: 1
       bone: 0
       boneData:
         massScale: 1
@@ -89,14 +89,14 @@ MonoBehaviour:
         interpolation: 0
         collisionDetection: 2
         colliderMaterial: {fileID: 0}
-        colliderRadius: 0.2
+        colliderRadius: 0.15
         boxZOffset: 0
         boxZSize: 0.3
         boneIndex: 2
         showJointsEditor: 1
         showRBEditor: 1
         showColliderEditor: 1
-    - editorShown: 0
+    - editorShown: 1
       bone: 4
       boneData:
         massScale: 1
@@ -119,10 +119,10 @@ MonoBehaviour:
         boxZOffset: 0
         boxZSize: 0.2
         boneIndex: 3
-        showJointsEditor: 0
+        showJointsEditor: 1
         showRBEditor: 1
-        showColliderEditor: 0
-    - editorShown: 0
+        showColliderEditor: 1
+    - editorShown: 1
       bone: 3
       boneData:
         massScale: 1
@@ -145,10 +145,10 @@ MonoBehaviour:
         boxZOffset: 0
         boxZSize: 0.2
         boneIndex: 4
-        showJointsEditor: 0
+        showJointsEditor: 1
         showRBEditor: 1
         showColliderEditor: 0
-    - editorShown: 0
+    - editorShown: 1
       bone: 2
       boneData:
         massScale: 1
@@ -171,10 +171,10 @@ MonoBehaviour:
         boxZOffset: 0
         boxZSize: 0.2
         boneIndex: 5
-        showJointsEditor: 0
+        showJointsEditor: 1
         showRBEditor: 1
-        showColliderEditor: 0
-    - editorShown: 0
+        showColliderEditor: 1
+    - editorShown: 1
       bone: 1
       boneData:
         massScale: 1
@@ -197,10 +197,10 @@ MonoBehaviour:
         boxZOffset: 0
         boxZSize: 0.2
         boneIndex: 6
-        showJointsEditor: 0
+        showJointsEditor: 1
         showRBEditor: 1
         showColliderEditor: 0
-    - editorShown: 0
+    - editorShown: 1
       bone: 16
       boneData:
         massScale: 1
@@ -209,7 +209,7 @@ MonoBehaviour:
         angularYLimit: 25
         angularZLimit: 25
         forceOff: 0
-        axis1: {x: 0, y: 1, z: 0}
+        axis1: {x: -1, y: 0, z: 0}
         axis2: {x: 0, y: 0, z: 1}
         mass: 1.59
         angularDrag: 0.05
@@ -223,10 +223,10 @@ MonoBehaviour:
         boxZOffset: 0
         boxZSize: 0.2
         boneIndex: 7
-        showJointsEditor: 0
+        showJointsEditor: 1
         showRBEditor: 1
-        showColliderEditor: 0
-    - editorShown: 0
+        showColliderEditor: 1
+    - editorShown: 1
       bone: 15
       boneData:
         massScale: 1
@@ -235,8 +235,8 @@ MonoBehaviour:
         angularYLimit: 25
         angularZLimit: 25
         forceOff: 0
-        axis1: {x: 0, y: 1, z: 0}
-        axis2: {x: 0, y: 0, z: 1}
+        axis1: {x: -1, y: 0, z: 0}
+        axis2: {x: 0, y: 0, z: -1}
         mass: 1.59
         angularDrag: 0.05
         drag: 10
@@ -249,10 +249,10 @@ MonoBehaviour:
         boxZOffset: 0
         boxZSize: 0.2
         boneIndex: 8
-        showJointsEditor: 0
+        showJointsEditor: 1
         showRBEditor: 1
         showColliderEditor: 0
-    - editorShown: 0
+    - editorShown: 1
       bone: 14
       boneData:
         massScale: 1
@@ -262,7 +262,7 @@ MonoBehaviour:
         angularZLimit: 25
         forceOff: 0
         axis1: {x: 0, y: 0, z: 1}
-        axis2: {x: 0, y: 1, z: 0}
+        axis2: {x: -1, y: 0, z: 0}
         mass: 2.95
         angularDrag: 0.05
         drag: 0
@@ -275,10 +275,10 @@ MonoBehaviour:
         boxZOffset: 0
         boxZSize: 0.2
         boneIndex: 9
-        showJointsEditor: 0
+        showJointsEditor: 1
         showRBEditor: 1
-        showColliderEditor: 0
-    - editorShown: 0
+        showColliderEditor: 1
+    - editorShown: 1
       bone: 13
       boneData:
         massScale: 1
@@ -287,8 +287,8 @@ MonoBehaviour:
         angularYLimit: 85
         angularZLimit: 25
         forceOff: 0
-        axis1: {x: 0, y: 0, z: 1}
-        axis2: {x: 0, y: 1, z: 0}
+        axis1: {x: 0, y: 0, z: -1}
+        axis2: {x: -1, y: 0, z: 0}
         mass: 2.95
         angularDrag: 0.05
         drag: 0
@@ -301,6 +301,6 @@ MonoBehaviour:
         boxZOffset: 0
         boxZSize: 0.2
         boneIndex: 10
-        showJointsEditor: 0
+        showJointsEditor: 1
         showRBEditor: 1
         showColliderEditor: 1
